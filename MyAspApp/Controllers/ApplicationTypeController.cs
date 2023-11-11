@@ -34,5 +34,73 @@ namespace MyAspApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        //GET - EDIT
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            //var category = _db.Category.Find(id);
+            var application = _db.ApplicationType.FirstOrDefault(x => x.Id == id);
+
+            if (application == null) return NotFound();
+
+            return View(application);
+        }
+
+        //POST - Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(ApplicationType application)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.ApplicationType.Update(application);
+                _db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        //GET - Delete
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            //var category = _db.Category.Find(id);
+            var application = _db.ApplicationType.FirstOrDefault(x => x.Id == id);
+
+            if (application == null) return NotFound();
+
+            return View(application);
+        }
+
+        //POST - Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            var application = _db.ApplicationType.FirstOrDefault(x => x.Id == id);
+            if (application != null)
+            {
+
+                _db.ApplicationType.Remove(application);
+                _db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
     }
 }
