@@ -1,0 +1,92 @@
+﻿@model MyAspApp.Models.Product
+
+@{
+    var title = "Create product";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @if(Model.Id != 0)
+    {
+        title = "Edit product";
+        <input asp-for="Id" hidden/>
+    }
+    
+    <div class="border p-3">
+        <div class="row mb-3">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+
+                <div class="mb-3 row">
+                    <label asp-for="Name" class="col-4 col-form-label"></label>
+                    <div class="col">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label asp-for="Price" class="col-4 col-form-label"></label>
+                    <div class="col">
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label asp-for="Description" class="col-4 col-form-label"></label>
+                    <div class="col">
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-4 col-form-label">Image</div>
+                    <div class="col">
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label asp-for="CategoryId" class="col-4 col-form-label"></label>
+                    <div class="col">
+                        <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">
+                            <option selected>--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-8 offset-4">
+                        @if(Model.Id != 0)
+                        {
+                            //update
+                            <button style="width:70%" type="submit" class="btn btn-info">Update</button>
+                        }
+                        else
+                        {
+                            //create
+                            <button onclick="return validateInput()" style="width:70%" type="submit" class="btn btn-primary">Create</button>
+                        }
+                        <a asp-action="Index" style="width:25%" class="btn btn-secondary">Back</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
