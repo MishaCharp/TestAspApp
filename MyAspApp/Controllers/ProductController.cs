@@ -19,22 +19,13 @@ namespace MyAspApp.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> products = _db.Product.Include(x => x.Category).ToList();
+            List<Product> products = _db.Product.Include(x => x.Category).Include(x=>x.ApplicationType).ToList();
             return View(products);
         }
 
         //GET - UPSERT
         public IActionResult Upsert(int? id)
         {
-            //List<SelectListItem> categoryListDown = _db.Category.Select(x => new SelectListItem
-            //{
-            //    Text = x.Name,
-            //    Value = x.Id.ToString()
-            //}).ToList();
-
-            //ViewBag.CategoryDropDown = categoryListDown;
-
-            //var product = new Product();
 
             ProductVM productVM = new ProductVM()
             {
@@ -43,7 +34,12 @@ namespace MyAspApp.Controllers
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
-                }).ToList()
+                }).ToList(),
+                ApplicationTypeSelectList = _db.ApplicationType.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList(),
             };
 
             if (id == null)
@@ -68,7 +64,7 @@ namespace MyAspApp.Controllers
                 var files = HttpContext.Request.Form.Files;
                 string webRootPath = _environment.WebRootPath;
 
-                if(productVM.Product.Id == 0)
+                if (productVM.Product.Id == 0)
                 {
                     //creating
                     string upload = webRootPath + WC.ImagePath;
@@ -88,9 +84,9 @@ namespace MyAspApp.Controllers
                 }
                 else
                 {
-                    var product = _db.Product.AsNoTracking().FirstOrDefault(x=>x.Id == productVM.Product.Id);
+                    var product = _db.Product.AsNoTracking().FirstOrDefault(x => x.Id == productVM.Product.Id);
 
-                    if(files.Count > 0)
+                    if (files.Count > 0)
                     {
                         string upload = webRootPath + WC.ImagePath;
                         string fileName = Guid.NewGuid().ToString();
@@ -123,10 +119,10 @@ namespace MyAspApp.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(productVM);
         }
 
-
+            
         //GET - Delete
         public IActionResult Delete(int? id)
         {
@@ -135,8 +131,7 @@ namespace MyAspApp.Controllers
                 return NotFound();
             }
 
-            //var category = _db.Category.Find(id);
-            var product = _db.Product.FirstOrDefault(x => x.Id == id);
+            var product = _db.Product.Include(x=>x.Category).Include(x=>x.ApplicationType).FirstOrDefault(x => x.Id == id);
 
             if (product == null) return NotFound();
 
@@ -144,13 +139,23 @@ namespace MyAspApp.Controllers
         }
 
         //POST - Delete
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
+            string webRootPath = _environment.WebRootPath;
             var product = _db.Product.FirstOrDefault(x => x.Id == id);
             if (product != null)
             {
+
+                string upload = webRootPath + WC.ImagePath;
+
+                var oldFile = Path.Combine(upload, product.Image);
+
+                if (System.IO.File.Exists(oldFile))
+                {
+                    System.IO.File.Delete(oldFile);
+                }
 
                 _db.Product.Remove(product);
                 _db.SaveChanges();

@@ -61,6 +61,16 @@
                 </div>
 
                 <div class="mb-3 row">
+                    <label asp-for="Product.ApplicationId" class="col-4 col-form-label"></label>
+                    <div class="col">
+                        <select asp-for="Product.ApplicationId" asp-items="@Model.ApplicationTypeSelectList" class="form-control">
+                            <option selected>--Select Application Type--</option>
+                        </select>
+                        <span asp-validation-for="Product.ApplicationId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
                     <div class="col-8 offset-4">
                         @if(Model.Product.Id != 0)
                         {
@@ -78,7 +88,10 @@
 
             </div>
             <div class="col-4">
-                <img src="@WC.ImagePath@Model.Product.Image" width="100%" style="border-radius: 5px; border:1px solid #bbb"
+                @if(Model.Product.Id != 0)
+                {
+                    <img src="@WC.ImagePath@Model.Product.Image" width="100%" style="border-radius: 5px; border:1px solid #bbb">
+                }
             </div>
         </div>
 

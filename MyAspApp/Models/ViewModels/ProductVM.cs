@@ -6,5 +6,6 @@ namespace MyAspApp.Models.ViewModels
     {
         public Product Product { get; set; }
         public List<SelectListItem>? CategorySelectList { get; set; }
+        public List<SelectListItem>? ApplicationTypeSelectList { get; set; }
     }
 }
