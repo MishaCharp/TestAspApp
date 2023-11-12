@@ -1,14 +1,14 @@
-﻿@model MyAspApp.Models.Product
+﻿@model MyAspApp.Models.ViewModels.ProductVM
 
 @{
     var title = "Create product";
 }
 
 <form method="post" enctype="multipart/form-data">
-    @if(Model.Id != 0)
+    @if(Model.Product.Id != 0)
     {
         title = "Edit product";
-        <input asp-for="Id" hidden/>
+        <input asp-for="Product.Id" hidden/>
     }
     
     <div class="border p-3">
@@ -20,26 +20,26 @@
             <div class="col-8">
 
                 <div class="mb-3 row">
-                    <label asp-for="Name" class="col-4 col-form-label"></label>
+                    <label asp-for="Product.Name" class="col-4 col-form-label"></label>
                     <div class="col">
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <input asp-for="Product.Name" class="form-control" />
+                        <span asp-validation-for="Product.Name" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label asp-for="Price" class="col-4 col-form-label"></label>
+                    <label asp-for="Product.Price" class="col-4 col-form-label"></label>
                     <div class="col">
-                        <input asp-for="Price" class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
+                        <input asp-for="Product.Price" class="form-control" />
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label asp-for="Description" class="col-4 col-form-label"></label>
+                    <label asp-for="Product.Description" class="col-4 col-form-label"></label>
                     <div class="col">
-                        <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <input asp-for="Product.Description" class="form-control" />
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
                     </div>
                 </div>
 
@@ -47,23 +47,23 @@
                     <div class="col-4 col-form-label">Image</div>
                     <div class="col">
                         <input type="file" name="files" id="uploadBox" multiple class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label asp-for="CategoryId" class="col-4 col-form-label"></label>
+                    <label asp-for="Product.CategoryId" class="col-4 col-form-label"></label>
                     <div class="col">
-                        <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">
+                        <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-control">
                             <option selected>--Select Category--</option>
                         </select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <div class="col-8 offset-4">
-                        @if(Model.Id != 0)
+                        @if(Model.Product.Id != 0)
                         {
                             //update
                             <button style="width:70%" type="submit" class="btn btn-info">Update</button>
