@@ -38,7 +38,7 @@
                 <div class="mb-3 row">
                     <label asp-for="Product.Description" class="col-4 col-form-label"></label>
                     <div class="col">
-                        <input asp-for="Product.Description" class="form-control" />
+                        <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
                         <span asp-validation-for="Product.Description" class="text-danger"></span>
                     </div>
                 </div>
@@ -47,7 +47,6 @@
                     <div class="col-4 col-form-label">Image</div>
                     <div class="col">
                         <input type="file" name="files" id="uploadBox" multiple class="form-control" />
-                        <span asp-validation-for="Product.Price" class="text-danger"></span>
                     </div>
                 </div>
 
@@ -78,7 +77,9 @@
                 </div>
 
             </div>
-
+            <div class="col-4">
+                <img src="@WC.ImagePath@Model.Product.Image" width="100%" style="border-radius: 5px; border:1px solid #bbb"
+            </div>
         </div>
 
     </div>
@@ -88,5 +89,26 @@
     @{
         <partial name="_ValidationScriptsPartial" />
     }
+    <script>
+
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height : 250
+            });
+        });
+
+        function validateInput(){
+            if(document.getElementById("uploadBox").value == ""){
+                Swal.fire({
+                    title: "Error!",
+                    text: "Please upload an Image!",
+                    icon: "error"
+                });
+                return false;
+            }
+            return true;
+        }
+
+    </script>
 }
 
