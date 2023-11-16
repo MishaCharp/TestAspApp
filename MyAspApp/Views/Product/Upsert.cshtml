@@ -36,6 +36,14 @@
                 </div>
 
                 <div class="mb-3 row">
+                    <label asp-for="Product.ShortDesc" class="col-4 col-form-label"></label>
+                    <div class="col">
+                        <input asp-for="Product.ShortDesc" class="form-control" />
+                        <span asp-validation-for="Product.ShortDesc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
                     <label asp-for="Product.Description" class="col-4 col-form-label"></label>
                     <div class="col">
                         <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
